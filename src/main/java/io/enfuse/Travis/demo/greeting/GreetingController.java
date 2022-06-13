@@ -3,6 +3,8 @@ package io.enfuse.Travis.demo.greeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -13,7 +15,7 @@ public class GreetingController {
     private GreetingService greetingService;
 
     @GetMapping("/greeting/{id}")
-    public Greeting getGreeting(Long id){
+    public Greeting getGreeting(@PathVariable("id") Long id){
         return greetingService.getGreetingById(id);
     }
 

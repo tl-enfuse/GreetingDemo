@@ -1,7 +1,6 @@
 package io.enfuse.Travis.demo.greeting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,14 +35,15 @@ public class GreetingControllerTest {
 
     @Test
     public void when_givenId_returnGreeting() throws Exception {
-        mockMvc.perform(get("/greeting/1L"))
+        when(greetingService.getGreetingById(1L)).thenReturn(greeting);
+        mockMvc.perform(get("/greeting/{id}", 1L))
                 .andExpect(status().isOk());
-        //fake call to endpoint
-        //when
+        verify(greetingService).getGreetingById(1l);
     }
     @Test
-    public void when_givenGreeting_saveOrUpdate(){
-
+    public void when_givenGreeting_saveOrUpdate() throws Exception {
+        when(greetingService.createOrUpdateGreeting(greeting)).thenReturn(greeting);
+//        mockMvc.perform(post("/greeting").content(objectMapper.));
     }
     @Test
     public void when_givenGreeting_delete(){
